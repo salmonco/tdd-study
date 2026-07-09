@@ -13,17 +13,24 @@ npm test          # watch 모드: 파일 저장할 때마다 자동 재실행 (T
 npm run test:run  # 한 번만 실행
 ```
 
-## 첫 카타: FizzBuzz
-- 구현: `src/kata/fizzbuzz.ts`
-- 테스트: `src/kata/fizzbuzz.test.ts`
+## 카타
 
-## 다음에 해볼 카타
-- **String Calculator**: 빈 문자열, 구분자, 여러 숫자로 점진 확장
-- **Stack / Queue**: 자료구조를 테스트로 설계
-- React 컴포넌트
-- Reack Hook
+### FizzBuzz
+3의 배수는 Fizz, 5의 배수는 Buzz, 15의 배수는 FizzBuzz 출력하기
 
-## VSCode AI 자동완성 끄는 법
+### String Calculator
+구분자로 이루어진 문자열에서 숫자의 합을 계산하기
+
+### Stack / Queue
+자료구조 구현하기
+
+### React 컴포넌트
+React 컴포넌트 구현하기
+
+### React Hook
+React Hook 구현하기
+
+## 팁: VSCode AI 자동완성 끄는 법
 
 1. Cmd + Shift + P
 2. Preferences: Open User Setting (JSON) 열기
