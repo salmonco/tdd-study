@@ -35,4 +35,12 @@ describe('stringCalculator - add', () => {
     expect(add('//|\n4|5|6')).toBe(15)
     expect(add('//|\n1,2|3')).toBe(6)
   })
+  it('음수가 있으면 에러를 던진다', () => {
+    expect(() => add('-1')).toThrow('음수는 허용되지 않습니다: -1')
+    expect(() => add('2,-4,-8')).toThrow('음수는 허용되지 않습니다: -4, -8')
+  })
+  it('1000 초과는 무시한다', () => {
+    expect(add('2,1001')).toBe(2)
+    expect(add('1000,1')).toBe(1001)
+  })
 })

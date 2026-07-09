@@ -13,8 +13,12 @@ export function add(numbers: string) {
   if (customSeparator !== '') {
     csv = csv.replaceAll(customSeparator, ',')
   }
-  const numArr = csv.split(',').map(Number)
+  const numArr = csv.split(',').map(Number).filter((num) => num <= 1_000)
   // console.log({customSeparator, csv, numArr})
+  const negativeValues = numArr.filter((num) => num < 0)
+  if (negativeValues.length > 0) {
+    throw new Error(`음수는 허용되지 않습니다: ${negativeValues.join(', ')}`)
+  }
   const sum = numArr.reduce((acc, cur) => acc + cur, 0)
   return sum
 }
