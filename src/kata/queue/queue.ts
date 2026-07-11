@@ -1,52 +1,56 @@
-class Node {
-    constructor(v: number) {
+class Node<T> {
+    value: T
+    next: Node<T> | null
+
+    constructor(v: T) {
         this.value = v 
-        this.prev = null
         this.next = null
     }
 }
 
-/** 연결리스트로 구현한 큐 */
-export class Queue {
+/** 단방향 연결리스트로 구현한 큐 */
+export class Queue<T> {
+    #front: Node<T> | null
+    #rear: Node<T> | null
+    #size: number
+    
     constructor() {
-        this.init()
+        this.#front = null
+        this.#rear = null
+        this.#size = 0
     }
 
-    init() {
-        this.front = null
-        this.rear = null
-        this.cnt = 0
-    }
-
-    push(num: number) {
-        const node = new Node(num)
-        if (this.cnt === 0) {
-            this.front = node
-            this.rear = node
+    enqueue(v: T) {
+        const node = new Node<T>(v)
+        if (this.#rear === null) {
+            this.#front = node
         } else {
-            const rear = this.rear
+            const rear = this.#rear
             rear.next = node
-            node.prev = rear
-            this.rear = node
         }
-        this.cnt++
-        return this.cnt
+        this.#rear = node
+        this.#size++
+        return this.#size
     }
 
-    pop() {
-        if (this.cnt === 0) {
-            return null
+    dequeue() {
+        const front = this.#front
+        if (front === null) {
+            throw new Error('빈 큐에서는 값을 빼낼 수 없습니다')
         }
-        const front = this.front
-        if (this.cnt === 1) {
-            this.init()
-        } else {
-            const next = front.next
-            console.log(next)
-            next.prev = null
-            this.front = next
-            this.cnt--
+        if (front.next === null) {
+            this.#rear = null
         }
+        this.#front = front.next
+        this.#size--
         return front.value
+    }
+
+    isEmpty() {
+        return this.#size === 0
+    }
+
+    get size() {
+        return this.#size
     }
 }
