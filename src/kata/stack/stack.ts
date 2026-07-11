@@ -3,21 +3,22 @@ export class Stack<T> {
 
     push(v: T) {
         this.#arr.push(v)
-        return this.getSize()
+        return this.size
     }
 
     pop() {
-        if (this.getSize() === 0) {
+        const last = this.#arr.pop()
+        if (last === undefined) {
             throw new Error('빈 스택에서 값을 빼낼 수 없습니다')
         }
-        return this.#arr.pop()
+        return last
     }
 
-    getSize() {
+    get size() {
         return this.#arr.length
     }
 
     isEmpty() {
-        return this.getSize() === 0
+        return this.size === 0
     }
 }

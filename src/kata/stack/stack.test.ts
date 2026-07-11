@@ -8,10 +8,11 @@ describe('stack 자료구조', () => {
         stack = new Stack()
     })
 
-    it('스택에 값을 빼내면 가장 늦게 넣은 값이 빠진다', () => {
+    it('스택에 값을 빼내면 나중에 넣은 값이 먼저 빠진다', () => {
         stack.push(1)
         stack.push(2)
         expect(stack.pop()).toBe(2)
+        expect(stack.pop()).toBe(1)
     })
 
     it('빈 스택에서 값을 빼내면 에러를 던진다', () => {
@@ -23,10 +24,10 @@ describe('stack 자료구조', () => {
         expect(stack.push(2)).toBe(2)
     })
 
-    it('getSize를 호출하면 스택의 길이를 반환한다', () => {
-        expect(stack.getSize()).toBe(0)
+    it('size를 참조하면 스택의 길이를 반환한다', () => {
+        expect(stack.size).toBe(0)
         stack.push(1)
-        expect(stack.getSize()).toBe(1)
+        expect(stack.size).toBe(1)
     })
 
     it('isEmpty를 호출하면 스택이 비었는지 여부를 반환한다', () => {
