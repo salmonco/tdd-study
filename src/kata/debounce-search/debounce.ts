@@ -4,7 +4,7 @@ interface Options {
 
 export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options = { leading: false }) => {
     let timerId: number | null = null
-    let curFn: (() => void) | null = null
+    let pending: (() => void) | null = null
     const debounced = (p?: T) => {
         if (options.leading && timerId === null) {
             fn(p)
@@ -19,7 +19,7 @@ export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options
             }
         }, delay);
         if (!options.leading) {
-            curFn = () => fn(p)
+            pending = () => fn(p)
         }
     }
     debounced.cancel = () => {
@@ -29,8 +29,8 @@ export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options
         }
     }
     debounced.flush = () => {
-        if (timerId && curFn !== null) {
-            curFn()
+        if (timerId && pending !== null) {
+            pending()
         }
         debounced.cancel()
     }
