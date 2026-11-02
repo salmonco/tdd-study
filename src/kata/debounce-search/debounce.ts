@@ -8,8 +8,7 @@ export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options
         if (options.leading) {
             if (timerId === null) {
                 fn(p)
-                timerId = 1
-                setTimeout(() => {
+                timerId = setTimeout(() => {
                     timerId = null
                 }, delay);
             }
