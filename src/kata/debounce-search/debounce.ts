@@ -4,7 +4,7 @@ interface Options {
 
 export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options = { leading: false }) => {
     let timerId: number | null = null
-    const fnn = (p?: T) => {
+    const debounced = (p?: T) => {
         if (options.leading && timerId === null) {
             fn(p)
         }
@@ -18,11 +18,11 @@ export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options
             }
         }, delay);
     }
-    fnn.cancel = () => {
+    debounced.cancel = () => {
         if (timerId) {
             clearTimeout(timerId)
             timerId = null
         }
     }
-    return fnn
+    return debounced
 }
