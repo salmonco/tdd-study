@@ -97,4 +97,13 @@ describe('디바운스 검색', () => {
         expect(fn).toHaveBeenNthCalledWith(2, 'b')
         expect(fn).toHaveBeenCalledTimes(2)
     })
+    it('cancel 뒤 leading 호출은 다시 즉시 실행된다', () => {
+        const fn = vi.fn()
+        const debounced = debounce(fn, 300, { leading: true })
+        debounced('a')
+        debounced.cancel()
+        debounced('b')
+        expect(fn).toHaveBeenNthCalledWith(2, 'b')
+        expect(fn).toHaveBeenCalledTimes(2)
+    })
 })
