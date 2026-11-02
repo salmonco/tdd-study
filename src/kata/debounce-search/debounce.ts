@@ -5,20 +5,17 @@ interface Options {
 export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options = { leading: false }) => {
     let timerId: number | null = null
     const fnn = (p?: T) => {
-        if (options.leading) {
-            if (timerId === null) {
-                fn(p)
-                timerId = setTimeout(() => {
-                    timerId = null
-                }, delay);
-            }
-            return
+        if (options.leading && timerId === null) {
+            fn(p)
         }
-        if (timerId) {
+        if (timerId !== null) {
             clearTimeout(timerId)
         }
         timerId = setTimeout(() => {
-            fn(p)
+            timerId = null
+            if (!options.leading) {
+                fn(p)
+            }
         }, delay);
     }
     fnn.cancel = () => {
