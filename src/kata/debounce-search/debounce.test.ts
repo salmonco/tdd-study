@@ -67,4 +67,14 @@ describe('디바운스 검색', () => {
         vi.advanceTimersByTime(300)
         expect(fn).not.toHaveBeenCalled()
     })
+    it('원본 함수의 인자 타입을 잃지 않는다', () => {
+        const fn: (n: number | undefined) => void = vi.fn()
+        const debounced = debounce(fn, 300)
+        debounced()
+        debounced(123)
+        // @ts-expect-error string은 받으면 안 된다
+        debounced('abc')
+        // @ts-expect-error null은 받으면 안 된다
+        debounced(null)
+    })
 })

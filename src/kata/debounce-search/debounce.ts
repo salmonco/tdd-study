@@ -1,6 +1,6 @@
-export const debounce = (fn: (p?: any) => void, delay: number) => {
+export const debounce = <T>(fn: (p?: T) => void, delay: number) => {
     let timerId: number | null = null
-    const fnn = (p?: any) => {
+    const fnn = (p?: T) => {
         if (timerId) {
             clearTimeout(timerId)
         }
