@@ -2,12 +2,12 @@ interface Options {
     leading: boolean
 }
 
-export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options = { leading: false }) => {
+export const debounce = <F extends (...args: any[]) => void>(fn: F, delay: number, options: Options = { leading: false }) => {
     let timerId: number | null = null
     let pending: (() => void) | null = null
-    const debounced = (p?: T) => {
+    const debounced = (...args: Parameters<F>) => {
         if (options.leading && timerId === null) {
-            fn(p)
+            fn(...args)
         }
         if (timerId !== null) {
             clearTimeout(timerId)
@@ -15,11 +15,11 @@ export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options
         timerId = setTimeout(() => {
             timerId = null
             if (!options.leading) {
-                fn(p)
+                fn(...args)
             }
         }, delay);
         if (!options.leading) {
-            pending = () => fn(p)
+            pending = () => fn(...args)
         }
     }
     debounced.cancel = () => {

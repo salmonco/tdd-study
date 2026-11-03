@@ -68,7 +68,7 @@ describe('debounce', () => {
         expect(fn).not.toHaveBeenCalled()
     })
     it('원본 함수의 인자 타입을 잃지 않는다', () => {
-        const fn: (n: number | undefined) => void = vi.fn()
+        const fn: (n?: number) => void = vi.fn()
         const debounced = debounce(fn, 300)
         debounced()
         debounced(123)
