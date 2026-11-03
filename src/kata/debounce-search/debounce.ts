@@ -23,13 +23,13 @@ export const debounce = <T>(fn: (p?: T) => void, delay: number, options: Options
         }
     }
     debounced.cancel = () => {
-        if (timerId) {
+        if (timerId !== null) {
             clearTimeout(timerId)
             timerId = null
         }
     }
     debounced.flush = () => {
-        if (timerId && pending !== null) {
+        if (timerId !== null && pending !== null) {
             pending()
         }
         debounced.cancel()
