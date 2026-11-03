@@ -74,4 +74,15 @@ describe('useDebounce', () => {
         act(() => vi.advanceTimersByTime(300))
         expect(result.current).toBe('a')
     })
+    it('원본 함수의 인자 타입을 잃지 않는다', () => {
+        const { rerender } = renderHook(
+            ({ value }) => useDebounce(value, 300),
+            { initialProps: { value: 'a' } }
+        )
+        rerender({ value: 'abc' })
+        // @ts-expect-error number는 받을 수 없다
+        rerender({ value: 123 })
+        // @ts-expect-error boolean은 받을 수 없다
+        rerender({ value: false })
+    })
 })
