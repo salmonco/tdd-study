@@ -19,7 +19,7 @@ describe('useDebounce', () => {
             { initialProps: { value: 'a' } }
         )
         rerender({ value: 'b' })
-        vi.advanceTimersByTime(299)
+        act(() => vi.advanceTimersByTime(299))
         expect(result.current).toBe('a')
     })
     it('delay가 지나면 새 값이 저장된다', () => {
