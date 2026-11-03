@@ -51,4 +51,17 @@ describe('useDebounceCallback', () => {
         expect(fn).toHaveBeenCalledTimes(1)
         expect(fn).toHaveBeenCalledWith('b')
     })
+    it('fn이 바뀌면 최신 fn이 실행된다', () => {
+        const fn1 = vi.fn()
+        const fn2 = vi.fn()
+        const { result, rerender } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn: fn1 } }
+        )
+        result.current()
+        rerender({ fn: fn2 })
+        vi.advanceTimersByTime(300)
+        expect(fn1).not.toHaveBeenCalled()
+        expect(fn2).toHaveBeenCalledTimes(1)
+    })
 })
