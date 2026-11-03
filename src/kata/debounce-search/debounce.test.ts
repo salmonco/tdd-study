@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { debounce } from "./debounce";
 
-describe('디바운스 검색', () => {
+describe('debounce', () => {
     beforeEach(() => {
         vi.useFakeTimers()
     })
