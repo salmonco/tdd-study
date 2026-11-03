@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from "vitest";
 import { useDebounceCallback } from "./useDebounceCallback";
+import { StrictMode } from "react";
 
 describe('useDebounceCallback', () => {
     beforeEach(() => vi.useFakeTimers())
@@ -85,5 +86,54 @@ describe('useDebounceCallback', () => {
         result.current()
         vi.advanceTimersByTime(300)
         expect(fn).not.toHaveBeenCalled()
+    })
+        it('언마운트하면 대기 중인 타이머를 정리한다', () => {
+        const fn = vi.fn()
+        const { result, unmount } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn } }
+        )
+        result.current()
+        unmount()
+        expect(vi.getTimerCount()).toBe(0)
+    })
+    it('delay가 바뀌면 대기 중인 호출은 취소된다', () => {
+        const fn = vi.fn()
+        const { result, rerender } = renderHook(
+            ({ delay }) => useDebounceCallback(fn, delay),
+            { initialProps: { delay: 300 } }
+        )
+        result.current()
+        rerender({ delay: 500 })
+        vi.advanceTimersByTime(1000)
+        expect(fn).not.toHaveBeenCalled()
+    })
+    it('fn이 바뀌어도 반환 함수의 참조는 유지된다', () => {
+        const { result, rerender } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn: vi.fn() } }
+        )
+        const first = result.current
+        rerender({ fn: vi.fn() })
+        expect(result.current).toBe(first)
+    })
+    it('StrictMode에서도 1번만 실행된다', () => {
+        const fn = vi.fn()
+        const { result } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn }, wrapper: StrictMode }
+        )
+        result.current('a')
+        vi.advanceTimersByTime(300)
+        expect(fn).toHaveBeenCalledTimes(1)
+        expect(fn).toHaveBeenCalledWith('a')
+    })
+    it('반환 함수는 원본 함수의 인자 타입을 유지한다', () => {
+        const fn = (_keyword: string, _page: number) => {}
+        const { result } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn } }
+        )
+        expectTypeOf(result.current).parameters.toEqualTypeOf<[string, number]>()
     })
 })
