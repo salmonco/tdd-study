@@ -64,4 +64,26 @@ describe('useDebounceCallback', () => {
         expect(fn1).not.toHaveBeenCalled()
         expect(fn2).toHaveBeenCalledTimes(1)
     })
+    it('언마운트하면 대기 중인 호출은 실행되지 않는다', () => {
+        const fn = vi.fn()
+        const { result, unmount } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn } }
+        )
+        result.current()
+        unmount()
+        vi.advanceTimersByTime(300)
+        expect(fn).not.toHaveBeenCalled()
+    })
+    it('delay가 바뀌면 새 delay가 적용된다', () => {
+        const fn = vi.fn()
+        const { result, rerender } = renderHook(
+            ({ delay }) => useDebounceCallback(fn, delay),
+            { initialProps: { delay: 300 } }
+        )
+        rerender({ delay: 500 })
+        result.current()
+        vi.advanceTimersByTime(300)
+        expect(fn).not.toHaveBeenCalled()
+    })
 })
