@@ -27,4 +27,28 @@ describe('useDebounceCallback', () => {
         vi.advanceTimersByTime(1)
         expect(fn).toHaveBeenCalledTimes(1)
     })
+    it('인자를 그대로 넘긴다', () => {
+        const fn = vi.fn()
+        const { result } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn } }
+        )
+        result.current('a', 1)
+        vi.advanceTimersByTime(300)
+        expect(fn).toHaveBeenCalledWith('a', 1)
+    })
+    it('리렌더링되어도 이전 호출과 묶여서 1번만 실행된다', () => {
+        const fn = vi.fn()
+        const { result, rerender } = renderHook(
+            ({ fn }) => useDebounceCallback(fn, 300),
+            { initialProps: { fn } }
+        )
+        result.current('a')
+        vi.advanceTimersByTime(100)
+        rerender({ fn })
+        result.current('b')
+        vi.advanceTimersByTime(300)
+        expect(fn).toHaveBeenCalledTimes(1)
+        expect(fn).toHaveBeenCalledWith('b')
+    })
 })
