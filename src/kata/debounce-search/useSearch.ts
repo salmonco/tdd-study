@@ -7,6 +7,7 @@ export const useSearch = () => {
     const [error, setError] = useState<Error | null>(null)
     const onSearch = async (value: string) => {
         setLoading(true)
+        setError(null)
         try {
             const res = await search(value)
             setResult(res)
