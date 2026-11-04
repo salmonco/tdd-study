@@ -8,7 +8,7 @@ const SearchPage = () => {
             <SearchInput onSearch={search} />
             {loading && <span>검색 중...</span>}
             {error && <span>검색에 실패했습니다</span>}
-            <ul>{result.map((r) => <li>{r}</li>)}</ul>
+            <ul>{result.map((r) => <li key={r}>{r}</li>)}</ul>
         </main>
     )
 }
