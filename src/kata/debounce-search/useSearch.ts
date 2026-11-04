@@ -16,5 +16,5 @@ export const useSearch = () => {
             setLoading(false)
         }
     }
-    return { search: onSearch, result, loading, error }
+    return { onSearch, result, loading, error }
 }
